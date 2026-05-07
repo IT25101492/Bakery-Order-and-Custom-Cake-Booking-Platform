@@ -30,7 +30,7 @@ public class UserDAOImpl implements UserDAO {
             // Bind parameters
             ps.setString(1, customer.getUsername());
             ps.setString(2, customer.getEmail());
-            ps.setString(3, customer.getPasswordForAuth()); // Internal access via protected method
+            ps.setString(3, customer.getPassword()); // Internal access via protected method
             ps.setString(4, customer.getPhoneNumber());
             ps.setString(5, customer.getDeliveryAddress());
 
@@ -166,7 +166,7 @@ public class UserDAOImpl implements UserDAO {
 
             ps.setString(1, customer.getUsername());
             ps.setString(2, customer.getEmail());
-            ps.setString(3, customer.getPasswordForAuth());
+            ps.setString(3, customer.getPassword());
             ps.setString(4, customer.getPhoneNumber());
             ps.setString(5, customer.getDeliveryAddress());
             ps.setInt(6, customer.getUserId());
