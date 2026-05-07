@@ -1,0 +1,26 @@
+# Maven build output
+target/
+
+
+# VS Code settings
+.vscode/
+*.classpath
+*.project
+*.settings
+
+
+# OS generated files
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+
+
+# Java compiled files
+*.class
+
+
+# Package files
+*.jar
+*.war
+*.ear
