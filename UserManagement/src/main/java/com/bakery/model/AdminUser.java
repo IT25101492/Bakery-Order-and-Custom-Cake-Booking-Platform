@@ -14,7 +14,7 @@ public class AdminUser extends User {
                      String password, String phoneNumber,
                      int adminLevel, String department,
                      LocalDateTime lastLoginTime, boolean isActive) {
-        // Initialize parent (User) fields via super constructor
+        // Initialize parent (User) fields
         super(userId, username, email, password, phoneNumber);
 
         // Initialize admin-specific fields
