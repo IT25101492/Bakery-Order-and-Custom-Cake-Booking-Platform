@@ -7,7 +7,7 @@ public abstract class User {
     private int    userId;
     private String username;
     private String email;
-    private String password;   // No getter for password — security through encapsulation
+    private String password;   //No getter for password - security through encapsulation
     private String phoneNumber;
 
     // Constructors
@@ -20,7 +20,7 @@ public abstract class User {
         this.phoneNumber = phoneNumber;
     }
 
-    // Default no-arg constructor for flexibility
+    // Default constructor
     public User() {}
 
 
@@ -63,12 +63,19 @@ public abstract class User {
     }
 
     /* 
-    Protected Helper — Accessible by subclasses only
+    Accessible by subclasses only
     Used internally for password comparison during auth
     */ 
     protected String getPasswordForAuth() {
         return password;
     }
+
+
+    // Used by DAO classes and kept seperated from getPasswordForAuth()
+    public String getPassword(){
+        return password;
+    }
+
 
    /* 
    Static Utility Method
