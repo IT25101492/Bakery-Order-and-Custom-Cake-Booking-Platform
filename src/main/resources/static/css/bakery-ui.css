@@ -1,0 +1,290 @@
+:root {
+    --bakery-ink: #1f2937;
+    --bakery-muted: #6b7280;
+    --bakery-bg: #f6efe7;
+    --bakery-surface: rgba(255, 255, 255, 0.88);
+    --bakery-surface-strong: #ffffff;
+    --bakery-primary: #c46a2f;
+    --bakery-primary-dark: #9f4d1f;
+    --bakery-accent: #7c3aed;
+    --bakery-accent-soft: rgba(124, 58, 237, 0.12);
+    --bakery-border: rgba(31, 41, 55, 0.10);
+    --bakery-shadow: 0 18px 50px rgba(31, 41, 55, 0.12);
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body.bakery-app {
+    color: var(--bakery-ink);
+    background:
+        radial-gradient(circle at top left, rgba(196, 106, 47, 0.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(124, 58, 237, 0.14), transparent 24%),
+        linear-gradient(180deg, #fffaf4 0%, #f6efe7 42%, #f3ede5 100%);
+    background-attachment: fixed;
+}
+
+.bakery-navbar {
+    background: rgba(31, 41, 55, 0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+}
+
+.bakery-brand {
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.bakery-shell {
+    max-width: 1280px;
+}
+
+.bakery-hero {
+    background:
+        linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(124, 58, 237, 0.92)),
+        linear-gradient(135deg, #1f2937, #7c3aed);
+    color: #fff;
+    border-radius: 28px;
+    padding: 2rem;
+    box-shadow: var(--bakery-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.bakery-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at right top, rgba(255, 255, 255, 0.18), transparent 28%);
+    pointer-events: none;
+}
+
+.bakery-hero .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.bakery-hero h1,
+.bakery-hero h2,
+.bakery-hero h3,
+.bakery-hero p {
+    position: relative;
+    z-index: 1;
+}
+
+.bakery-hero h1,
+.bakery-hero h2,
+.bakery-hero h3 {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.bakery-hero p {
+    color: rgba(255, 255, 255, 0.82);
+    margin-bottom: 0;
+}
+
+.bakery-card,
+.card.bakery-card {
+    background: var(--bakery-surface);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--bakery-border);
+    border-radius: 24px;
+    box-shadow: var(--bakery-shadow);
+}
+
+.bakery-panel {
+    background: var(--bakery-surface-strong);
+    border-radius: 20px;
+    border: 1px solid var(--bakery-border);
+    box-shadow: var(--bakery-shadow);
+}
+
+.table-bakery {
+    overflow: hidden;
+    border-radius: 20px;
+    border: 1px solid var(--bakery-border);
+    background: var(--bakery-surface-strong);
+    box-shadow: var(--bakery-shadow);
+}
+
+.table-bakery thead th {
+    background: linear-gradient(135deg, #2f3a4a, #1f2937);
+    color: #fff;
+    border: none;
+    padding: 1rem 0.9rem;
+    vertical-align: middle;
+}
+
+.table-bakery tbody td {
+    vertical-align: middle;
+    padding: 0.95rem 0.9rem;
+    border-color: rgba(31, 41, 55, 0.08);
+}
+
+.table-bakery tbody tr:hover {
+    background: rgba(196, 106, 47, 0.05);
+}
+
+.btn-bakery-primary {
+    background: linear-gradient(135deg, var(--bakery-primary), var(--bakery-primary-dark));
+    border: none;
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(196, 106, 47, 0.28);
+}
+
+.btn-bakery-primary:hover,
+.btn-bakery-primary:focus {
+    color: #fff;
+    filter: brightness(1.03);
+}
+
+.btn-bakery-outline {
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #fff;
+}
+
+.btn-bakery-outline:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+.form-control,
+.form-select {
+    border-radius: 14px;
+    border-color: rgba(31, 41, 55, 0.14);
+    padding: 0.85rem 1rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: rgba(196, 106, 47, 0.55);
+    box-shadow: 0 0 0 0.25rem rgba(196, 106, 47, 0.12);
+}
+
+.form-label {
+    color: var(--bakery-ink);
+}
+
+.bakery-kpi {
+    border-radius: 22px;
+    border: none;
+    box-shadow: var(--bakery-shadow);
+    overflow: hidden;
+}
+
+.bakery-kpi .card-body {
+    padding: 1.4rem;
+}
+
+.bakery-kpi .kpi-value {
+    font-size: 2.3rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+}
+
+.bakery-kpi .kpi-label {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.76rem;
+    opacity: 0.85;
+}
+
+.timeline-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.step-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+    border: 3px solid #d6d9df;
+    background: #fff;
+    color: #9ca3af;
+    box-shadow: 0 8px 18px rgba(31, 41, 55, 0.08);
+}
+
+.step-circle.done {
+    background: linear-gradient(135deg, #15803d, #16a34a);
+    border-color: #16a34a;
+    color: #fff;
+}
+
+.step-circle.active {
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    border-color: #2563eb;
+    color: #fff;
+}
+
+.step-line {
+    width: 3px;
+    height: 34px;
+    background: #d6d9df;
+    margin-left: 20px;
+    margin-bottom: 1rem;
+}
+
+.step-line.done {
+    background: linear-gradient(180deg, #16a34a, #22c55e);
+}
+
+.step-label {
+    margin-left: 1rem;
+}
+
+.step-label .title {
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+}
+
+.step-label .sub {
+    font-size: 0.86rem;
+    color: var(--bakery-muted);
+    margin: 0;
+}
+
+.price-chip {
+    background: var(--bakery-accent-soft);
+    color: var(--bakery-accent);
+    border: 1px solid rgba(124, 58, 237, 0.20);
+    border-radius: 16px;
+    padding: 1rem 1.15rem;
+}
+
+.mini-fade {
+    animation: bakeryFadeUp 0.55s ease both;
+}
+
+@keyframes bakeryFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
