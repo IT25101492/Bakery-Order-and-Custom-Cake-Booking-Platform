@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS customers (
     phone_number    VARCHAR(20),                     
     registration_date DATETIME DEFAULT CURRENT_TIMESTAMP, 
     loyalty_points  INT DEFAULT 0,                    
-    is_active       TINYINT(1) DEFAULT 1             
+    is_active       TINYINT(1) DEFAULT 1,
+    delivery_address VARCHAR(200)             
 );
-
 
 CREATE TABLE IF NOT EXISTS admins (
     admin_id        INT AUTO_INCREMENT PRIMARY KEY,
@@ -40,3 +40,10 @@ INSERT INTO customers (username, email, password, phone_number, delivery_address
 
 INSERT INTO admins (username, email, password, phone_number, admin_level, department) VALUES
 ('admin', 'admin@bakery.com', 'Admin@123', '555-0001', 2, 'Management');
+
+ALTER TABLE customers
+ADD delivery_address VARCHAR(200) NOT NULL;
+
+SELECT * FROM customers
+
+SELECT * FROM admins
