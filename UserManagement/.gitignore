@@ -3,7 +3,7 @@ target/
 
 
 # VS Code settings
-.vscode/
+**/.vscode/   
 *.classpath
 *.project
 *.settings
