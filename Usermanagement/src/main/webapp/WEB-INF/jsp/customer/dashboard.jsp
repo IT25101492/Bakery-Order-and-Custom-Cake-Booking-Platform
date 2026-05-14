@@ -162,12 +162,7 @@
                     </div>
                     <div>
                         <p class="form-label">Member Since</p>
-                        <p>
-                            <fmt:formatDate
-                                value="${customer.registrationDate}"
-                                pattern="dd MMM yyyy"
-                                type="date"/>
-                        </p>
+                        <p>${customer.formattedRegistrationDate}</p>
                     </div>
                 </div>
 

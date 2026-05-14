@@ -71,7 +71,13 @@ public class AuthController {
     public String handleAdminLogin(@RequestParam String loginIdentifier, 
                                    @RequestParam String password, 
                                    HttpSession session, Model model) {
+        //Tries to find admin by username
         AdminUser admin = adminDAO.getAdminByUsername(loginIdentifier);
+
+        //If username not found, try email
+        if (admin == null){
+            admin = adminDAO.getAdminByEmail(loginIdentifier);
+        }
         
         //Polymorphism: Admin authentication includes extra checks
         if (admin != null && admin.authenticate(password)) {

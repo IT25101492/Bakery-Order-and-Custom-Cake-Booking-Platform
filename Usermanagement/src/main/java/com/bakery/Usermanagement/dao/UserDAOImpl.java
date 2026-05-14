@@ -182,21 +182,21 @@ public class UserDAOImpl implements UserDAO {
     }
 
     
-    @Override
-    public boolean deleteCustomer(int customerId) { //DELETE - Removes a customer account permanently
-        String sql = "DELETE FROM customers WHERE customer_id = ?";
+        @Override
+        public boolean deleteCustomer(int customerId) { //DELETE - Removes a customer account permanently
+            String sql = "DELETE FROM customers WHERE customer_id = ?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+            try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, customerId);
-            return ps.executeUpdate() == 1;
+                ps.setInt(1, customerId);
+                return ps.executeUpdate() == 1;
 
-        } catch (SQLException e) {
-            System.err.println("[UserDAOImpl] deleteCustomer error: " + e.getMessage());
-            return false;
+            } catch (SQLException e) {
+                System.err.println("[UserDAOImpl] deleteCustomer error: " + e.getMessage());
+                return false;
+            }
         }
-    }
 
     
     @Override

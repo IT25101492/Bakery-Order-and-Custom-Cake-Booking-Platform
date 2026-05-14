@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -325,9 +325,7 @@
                                             </td>
                                             <td>${cust.loyaltyPoints}</td>
                                             <td class="td-muted">
-                                                <fmt:formatDate
-                                                    value="${cust.registrationDate}"
-                                                    pattern="dd MMM yyyy"/>
+                                                ${cust.formattedRegistrationDate}
                                             </td>
                                             <td>
                                                 <c:choose>
