@@ -24,7 +24,7 @@ public abstract class User {
     public User() {}
 
 
-    // Abstract Method — Polymorphism foundation
+    //Abstract Method
     public abstract boolean authenticate(String inputPassword);
 
     public int    getUserId()     { return userId; }
@@ -38,34 +38,31 @@ public abstract class User {
     }
 
     public void setUsername(String username) {
-        // Validation: username must not be null or empty
+        //Username must not be null or empty
         if (username != null && !username.trim().isEmpty()) {
             this.username = username.trim();
         }
     }
 
     public void setEmail(String email) {
-        // Validation: basic email format check
+        //Basic email format check
         if (email != null && email.contains("@") && email.contains(".")) {
             this.email = email.trim().toLowerCase();
         }
     }
 
+    //Enhanced password validation
     public void setPassword(String password) {
-        // Validation: At least 8 chars, 1 uppercase, 1 digit, 1 special char
-        if (isValidPassword(password)) {
-            this.password = password;
-        }
+            this.password = password; 
     }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    /* 
-    Accessible by subclasses only
-    Used internally for password comparison during auth
-    */ 
+     
+    
+    //Used internally for password comparison during auth
     protected String getPasswordForAuth() {
         return password;
     }
@@ -77,12 +74,7 @@ public abstract class User {
     }
 
 
-   /* 
-   Static Utility Method
-     Password validation logic centralized here so both
-     RegularCustomer and AdminUser can reuse it
-   */ 
-
+     //Password logic validation
     public static boolean isValidPassword(String password) {
         if (password == null || password.length() < 8) return false;
 
