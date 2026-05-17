@@ -54,7 +54,9 @@ public class AuthController {
             session.setAttribute("customerId", customer.getUserId());
             session.setAttribute("customerUsername", customer.getUsername());
             session.setAttribute("userRole", "CUSTOMER");
+            //System.out.println("Customer Login Success - ID: " + customer.getUserId());
             return "redirect:/dashboard";
+            
         }
         
         model.addAttribute("errorMessage", "Invalid credentials.");
@@ -86,6 +88,7 @@ public class AuthController {
             session.setAttribute("department", admin.getDepartment());
             session.setAttribute("adminLevel", admin.getAdminLevel());
             session.setAttribute("userRole", "ADMIN");
+            //System.out.println("Admin Login Success - ID: " + admin.getUserId());
             return "redirect:/admin/dashboard";
         }
         
