@@ -15,77 +15,89 @@ public class CustomerController {
     @Autowired
     private UserDAO userDAO;
 
-    // CREATE: Show Registration Form
+    //Shows Registration Form
     @GetMapping("/register")
-    public String showRegister() {
-        return "customer/register";
+    public String showRegister(Model model) {
+        model.addAttribute("isAuthPage", true);
+        model.addAttribute("contentPage", "customer/register.jsp");
+        model.addAttribute("pageTitle", "Create Account");
+        return "layout";
     }
 
-    // CREATE: Process Registration
+    //Registration Process
     @PostMapping("/register")
-    public String register(@ModelAttribute RegularCustomer newCustomer, 
+    public String register(@ModelAttribute RegularCustomer newCustomer,
                            @RequestParam String confirmPassword, Model model) {
-        // Validation (Encapsulation logic inside Model/DAO)
         if (!newCustomer.getPassword().equals(confirmPassword)) {
             model.addAttribute("errorMessage", "Passwords do not match.");
-            return "customer/register";
+            model.addAttribute("isAuthPage", true);
+            model.addAttribute("contentPage", "customer/register.jsp");
+            model.addAttribute("pageTitle", "Create Account");
+            return "layout";
         }
         if (userDAO.isUsernameExists(newCustomer.getUsername())) {
             model.addAttribute("errorMessage", "Username already taken.");
-            return "customer/register";
+            model.addAttribute("isAuthPage", true);
+            model.addAttribute("contentPage", "customer/register.jsp");
+            model.addAttribute("pageTitle", "Create Account");
+            return "layout";
         }
-
         userDAO.registerCustomer(newCustomer);
         return "redirect:/login?registered=true";
     }
 
-    // READ: View Dashboard
+    //View Dashboard
     @GetMapping("/dashboard")
     public String showDashboard(HttpSession session, Model model) {
         Integer customerId = (Integer) session.getAttribute("customerId");
         if (customerId == null) return "redirect:/login";
-
         RegularCustomer customer = userDAO.getCustomerById(customerId);
+        model.addAttribute("contentPage", "customer/dashboard.jsp");
+        model.addAttribute("pageTitle", "Dashboard");
         model.addAttribute("customer", customer);
-        return "customer/dashboard";
+        return "layout";
     }
 
-    // READ: Show Profile Update Page
+    //Shows Profile Update Page
     @GetMapping("/profile")
     public String showProfile(HttpSession session, Model model) {
         Integer customerId = (Integer) session.getAttribute("customerId");
         if (customerId == null) return "redirect:/login";
-
+        model.addAttribute("contentPage", "customer/profile.jsp");
+        model.addAttribute("pageTitle", "My Profile");
         model.addAttribute("customer", userDAO.getCustomerById(customerId));
-        return "customer/profile";
+        return "layout";
     }
 
-    // UPDATE: Modify customer details
+    //Modifying customer details
     @PostMapping("/profile")
-    public String updateProfile(@ModelAttribute RegularCustomer updatedData, 
+    public String updateProfile(@ModelAttribute RegularCustomer updatedData,
                                 @RequestParam(required = false) String newPassword,
                                 HttpSession session, Model model) {
         Integer customerId = (Integer) session.getAttribute("customerId");
+        if (customerId == null) return "redirect:/login";
         RegularCustomer existing = userDAO.getCustomerById(customerId);
+        if (existing == null) return "redirect:/login";
 
-        // Encapsulation: update only allowed fields
         existing.setEmail(updatedData.getEmail());
         existing.setPhoneNumber(updatedData.getPhoneNumber());
         existing.setDeliveryAddress(updatedData.getDeliveryAddress());
-
         if (newPassword != null && !newPassword.isEmpty()) {
             if (User.isValidPassword(newPassword)) {
                 existing.setPassword(newPassword);
             } else {
                 model.addAttribute("errorMessage", "Weak password.");
+                model.addAttribute("contentPage", "customer/profile.jsp");
+                model.addAttribute("pageTitle", "My Profile");
                 model.addAttribute("customer", existing);
-                return "customer/profile";
+                return "layout";
             }
         }
-
         userDAO.updateCustomer(existing);
         model.addAttribute("successMessage", "Profile updated!");
+        model.addAttribute("contentPage", "customer/profile.jsp");
+        model.addAttribute("pageTitle", "My Profile");
         model.addAttribute("customer", existing);
-        return "customer/profile";
+        return "layout";
     }
 }

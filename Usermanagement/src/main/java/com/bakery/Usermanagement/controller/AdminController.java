@@ -1,151 +1,123 @@
 package com.bakery.Usermanagement.controller;
 
+import com.bakery.Usermanagement.dao.UserDAO;
+import com.bakery.Usermanagement.dao.AdminDAO;
+import com.bakery.Usermanagement.model.RegularCustomer;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.bakery.Usermanagement.dao.AdminDAO;
-import com.bakery.Usermanagement.dao.UserDAO;
-import com.bakery.Usermanagement.model.RegularCustomer;
-
-import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/admin") 
+@RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
-    private AdminDAO adminDAO; // DAO abstraction for admin-related database operations
-
+    private AdminDAO adminDAO;
     @Autowired
     private UserDAO userDAO;
 
-
-    //Admin Dashboard Stats
+    //Admin Dashboard
     @GetMapping("/dashboard")
     public String showAdminDashboard(HttpSession session, Model model) {
-
-        // Role-based access control using session
-        if (!"ADMIN".equals(session.getAttribute("userRole")))
-            return "redirect:/admin/login";
-
-        // Retrieve aggregated statistics using DAO abstraction
+        if (!"ADMIN".equals(session.getAttribute("userRole"))) return "redirect:/admin/login";
+        model.addAttribute("contentPage", "admin/dashboard.jsp");
+        model.addAttribute("pageTitle", "Admin Dashboard");
         model.addAttribute("totalCustomers", adminDAO.getTotalCustomerCount());
         model.addAttribute("newCustomersToday", adminDAO.getNewCustomersToday());
-
-        return "admin/dashboard";
+        return "layout";
     }
 
-
-    //Customer Management Page
+    //Customer List with Search
     @GetMapping("/customers")
-    public String manageCustomers(
-            @RequestParam(required = false) String action,   
-            @RequestParam(required = false) Integer id,      
-            @RequestParam(required = false) String search,   
-            HttpSession session,
-            Model model) {
+    public String listCustomers(@RequestParam(required = false) String search,
+                                @RequestParam(required = false) String action,
+                                @RequestParam(required = false) Integer id,
+                                HttpSession session, Model model) {
+        if (!"ADMIN".equals(session.getAttribute("userRole"))) return "redirect:/admin/login";
 
-        // Role-based access validation
-        if (!"ADMIN".equals(session.getAttribute("userRole")))
-            return "redirect:/admin/login";
-
-
-        //Permanently remove a customer
-        if ("delete".equals(action) && id != null) {
-            userDAO.deleteCustomer(id);
-            return "redirect:/admin/customers?successMessage=Customer deleted successfully";
+        //Handles Add/Edit form display
+        if ("add".equals(action)) {
+            model.addAttribute("action", "add");
+            model.addAttribute("customers", userDAO.getAllCustomers());
+            model.addAttribute("contentPage", "admin/customer-management.jsp");
+            model.addAttribute("pageTitle", "Customer Management");
+            return "layout";
         }
 
-
-        //Load selected customer data into form
         if ("edit".equals(action) && id != null) {
             model.addAttribute("action", "edit");
             model.addAttribute("editCustomer", userDAO.getCustomerById(id));
+            model.addAttribute("customers", userDAO.getAllCustomers());
+            model.addAttribute("contentPage", "admin/customer-management.jsp");
+            model.addAttribute("pageTitle", "Customer Management");
+            return "layout";
         }
 
-
-        //Display Add Customer form
-        if ("add".equals(action)) {
-            model.addAttribute("action", "add");
+        //Handles Delete
+        if ("delete".equals(action) && id != null) {
+            userDAO.deleteCustomer(id);
+            return "redirect:/admin/customers?successMessage=Customer+deleted+successfully";
         }
 
-
-        //Retrieve filtered results using DAO search method
+        //Shows customer list with optional search
         if (search != null && !search.isEmpty()) {
             model.addAttribute("customers", userDAO.searchCustomers(search));
             model.addAttribute("searchTerm", search);
-        }
-        else {
-            //Retrieve all customers for admin view
+        } else {
             model.addAttribute("customers", userDAO.getAllCustomers());
         }
-
-        return "admin/customer-management";
+        model.addAttribute("contentPage", "admin/customer-management.jsp");
+        model.addAttribute("pageTitle", "Customer Management");
+        return "layout";
     }
 
-
-    //Process Add or Edit Customer Form Submission
+    //Admin Add Customer
     @PostMapping("/customers")
-    public String handleCustomerAction(
-            @RequestParam String action,
-            @RequestParam(required = false) Integer customerId,
-            @RequestParam String username,
-            @RequestParam String email,
-            @RequestParam(required = false) String password,
-            @RequestParam(required = false) String phoneNumber,
-            @RequestParam(required = false) String deliveryAddress,
-            HttpSession session) {
+    public String addCustomer(@ModelAttribute RegularCustomer newCustomer,
+                              HttpSession session, Model model) {
+        if (!"ADMIN".equals(session.getAttribute("userRole"))) return "redirect:/admin/login";
 
-        // Role validation to ensure only admins perform CRUD
-        if (!"ADMIN".equals(session.getAttribute("userRole")))
-            return "redirect:/admin/login";
-
-
-        //Register a new customer account
-        if ("add".equals(action)) {
-
-            RegularCustomer customer = new RegularCustomer();
-
-            //Data validation handled inside model setters
-            customer.setUsername(username);
-            customer.setEmail(email);
-            customer.setPassword(password);
-            customer.setPhoneNumber(phoneNumber);
-            customer.setDeliveryAddress(deliveryAddress);
-
-            userDAO.registerCustomer(customer);
-
-            return "redirect:/admin/customers?successMessage=Customer added successfully";
+        if (userDAO.isUsernameExists(newCustomer.getUsername())) {
+            model.addAttribute("errorMessage", "Username already taken.");
+            model.addAttribute("action", "add");
+            model.addAttribute("customers", userDAO.getAllCustomers());
+            model.addAttribute("contentPage", "admin/customer-management.jsp");
+            model.addAttribute("pageTitle", "Customer Management");
+            return "layout";
         }
+        userDAO.registerCustomer(newCustomer);
+        return "redirect:/admin/customers?successMessage=Customer+added+successfully";
+    }
 
+    //Admin Edit Customer
+    @PostMapping("/customers/update")
+    public String updateCustomer(@ModelAttribute RegularCustomer updatedData,
+                                 @RequestParam int customerId,
+                                 @RequestParam(required = false) String password,
+                                 HttpSession session) {
+        if (!"ADMIN".equals(session.getAttribute("userRole"))) return "redirect:/admin/login";
 
-        //Modify existing customer details
-        if ("update".equals(action) && customerId != null) {
-
-            // Retrieve existing object using DAO abstraction
-            RegularCustomer existing = userDAO.getCustomerById(customerId);
-
-            //Update allowed fields only
-            existing.setUsername(username);
-            existing.setEmail(email);
-            existing.setPhoneNumber(phoneNumber);
-            existing.setDeliveryAddress(deliveryAddress);
-
-            // Only update password if new password provided
+        RegularCustomer existing = userDAO.getCustomerById(customerId);
+        if (existing != null) {
+            existing.setUsername(updatedData.getUsername());
+            existing.setEmail(updatedData.getEmail());
+            existing.setPhoneNumber(updatedData.getPhoneNumber());
+            existing.setDeliveryAddress(updatedData.getDeliveryAddress());
             if (password != null && !password.isEmpty()) {
                 existing.setPassword(password);
             }
-
             userDAO.updateCustomer(existing);
-
-            return "redirect:/admin/customers?successMessage=Customer updated successfully";
         }
+        return "redirect:/admin/customers?successMessage=Customer+updated+successfully";
+    }
 
-        return "redirect:/admin/customers";
+    //Removes customer 
+    @GetMapping("/customers/delete/{id}")
+    public String deleteCustomer(@PathVariable int id, HttpSession session) {
+        if (!"ADMIN".equals(session.getAttribute("userRole"))) return "redirect:/admin/login";
+        userDAO.deleteCustomer(id);
+        return "redirect:/admin/customers?successMessage=Customer+deleted+successfully";
     }
 }
