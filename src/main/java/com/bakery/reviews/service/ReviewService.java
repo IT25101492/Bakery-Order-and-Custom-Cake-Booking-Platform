@@ -1,0 +1,88 @@
+package com.bakery.reviews.service;
+
+import com.bakery.reviews.model.ProductReview;
+import com.bakery.reviews.model.Review;
+import com.bakery.reviews.model.Review.ReviewStatus;
+import com.bakery.reviews.model.ServiceReview;
+import com.bakery.reviews.repository.ReviewRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
+@Service
+@RequiredArgsConstructor
+public class ReviewService {
+
+    private final ReviewRepository reviewRepository;
+
+    // ── CREATE ──────────────────────────────────────────────────────────────
+
+    public Review submitProductReview(ProductReview review) {
+        review.setStatus(ReviewStatus.PENDING);
+        review.setVerified(false);
+        return reviewRepository.save(review);
+    }
+
+    public Review submitServiceReview(ServiceReview review) {
+        review.setStatus(ReviewStatus.PENDING);
+        review.setVerified(false);
+        return reviewRepository.save(review);
+    }
+
+    // ── READ ─────────────────────────────────────────────────────────────────
+
+    public List<Review> getAllReviews() {
+        return reviewRepository.findAll();
+    }
+
+    public Review getReviewById(Long id) {
+        return reviewRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Review not found with id: " + id));
+    }
+
+    public List<Review> getApprovedReviews() {
+        return reviewRepository.findByStatusOrderByCreatedAtDesc(ReviewStatus.APPROVED);
+    }
+
+    public List<Review> getPendingReviews() {
+        return reviewRepository.findByStatusOrderByCreatedAtDesc(ReviewStatus.PENDING);
+    }
+
+    public List<Review> getReviewsByProduct(String productName) {
+        return reviewRepository.findApprovedByProductName(productName);
+    }
+
+    public List<Review> getReviewsByCustomer(String email) {
+        return reviewRepository.findByCustomerEmail(email);
+    }
+
+    public Double getAverageRatingForProduct(String productName) {
+        Double avg = reviewRepository.findAverageRatingByProduct(productName);
+        return avg != null ? Math.round(avg * 10.0) / 10.0 : 0.0;
+    }
+
+    // ── UPDATE ───────────────────────────────────────────────────────────────
+
+    public Review updateReview(Long id, Map<String, Object> updates) {
+        Review existing = getReviewById(id);
+        if (updates.containsKey("comment")) existing.setComment((String) updates.get("comment"));
+        if (updates.containsKey("rating"))  existing.setRating((Integer) updates.get("rating"));
+        return reviewRepository.save(existing);
+    }
+
+    public Review moderateReview(Long id, ReviewStatus status) {
+        Review review = getReviewById(id);
+        review.setStatus(status);
+        if (status == ReviewStatus.APPROVED) review.setVerified(true);
+        return reviewRepository.save(review);
+    }
+
+    // ── DELETE ───────────────────────────────────────────────────────────────
+
+    public void deleteReview(Long id) {
+        Review review = getReviewById(id);
+        reviewRepository.delete(review);
+    }
+}
