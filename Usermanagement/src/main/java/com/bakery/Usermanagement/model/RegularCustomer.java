@@ -1,6 +1,7 @@
 package com.bakery.Usermanagement.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 //OOP Concepts Applied: Inheritence, Polymorphism, Encapsulation
 
@@ -89,4 +90,13 @@ public class RegularCustomer extends User {
             this.loyaltyPoints += points;
         }
     }
+    
+    //Method to return registration date as a String for JSP display
+    public String getFormattedRegistrationDate(){
+        if (registrationDate == null) return "N/A";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+        return registrationDate.format(formatter);
+    }
+
+
 }

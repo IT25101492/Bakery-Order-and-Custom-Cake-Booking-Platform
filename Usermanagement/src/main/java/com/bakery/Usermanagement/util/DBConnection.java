@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
-    private static final String DB_URL      = "jdbc:mysql://localhost:3306/bakery_db" + "?useSSL=false&serverTimezone=UTC";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/bakery_db?useSSL=false &allowPublicKeyRetrieval=true & serverTimezone=UTC";
     private static final String DB_USER     = "root";       // MySQL username
     private static final String DB_PASSWORD = "admin"; // MySQL password
     private static final String DB_DRIVER   = "com.mysql.cj.jdbc.Driver";
