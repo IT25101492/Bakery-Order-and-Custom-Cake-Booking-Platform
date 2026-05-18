@@ -74,12 +74,22 @@
                             </svg>
                             My Payments
                         </a>
-                        <a href="${pageContext.request.contextPath}/reviews" class="nav-item">
+                        
+                        a href="${pageContext.request.contextPath}/reviews" class="nav-item">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
                             </svg>
-                            My Reviews
+                            Browse Reviews
                         </a>
+                        
+                        <a href="${pageContext.request.contextPath}/reviews/submit" class="nav-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                            Submit Review
+                        </a>
+
                         <a href="${pageContext.request.contextPath}/profile" class="nav-item">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
