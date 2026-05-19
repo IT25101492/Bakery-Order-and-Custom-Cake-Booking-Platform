@@ -35,16 +35,23 @@
                     <c:choose>
                         <c:when test="${product.availability}">
                             <span class="badge badge-active" style="background-color: #2ecc71; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Available</span>
-                        </c:when>
+                        </c:when>    
                         <c:otherwise>
                             <span class="badge badge-inactive" style="background-color: #e74c3c; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Out of Stock</span>
                         </c:otherwise>
                     </c:choose>
                 </div>
+                
+                <c:if test="${product.availability}">
+                    <form action="${pageContext.request.contextPath}/cart/add" method="post" style="margin-top: 10px;">
+                        <input type="hidden" name="productId" value="${product.productId}">
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 8px;">Add to Cart</button>
+                    </form>
+                </c:if>
             </div>
         </div>
+        
     </c:forEach>
-    
     <c:if test="${empty products}">
         <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: #f9f9f9; border-radius: 8px; color: #666;">
             <p>No bakery items found. Please check back later!</p>
