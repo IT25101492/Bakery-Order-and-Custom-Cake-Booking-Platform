@@ -54,6 +54,7 @@ public class AuthController {
             session.setAttribute("customerId", customer.getUserId());
             session.setAttribute("customerUsername", customer.getUsername());
             session.setAttribute("userRole", "CUSTOMER");
+            session.setAttribute("customerEmail", customer.getEmail());
             return "redirect:/dashboard";
         }
 
