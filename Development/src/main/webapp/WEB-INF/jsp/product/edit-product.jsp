@@ -22,7 +22,8 @@
 
             <div class="form-group" style="flex: 1;">
                 <label class="form-label">Product Type</label>
-                <input type="text" value="${productTypeName}" class="form-control" readonly style="background-color: #f5f5f5;cursor: not-allowed;">
+                <input type="text" value="${productTypeName}" class="form-control" readonly 
+                       style="background-color: #f5f5f5; cursor: not-allowed;">
             </div>
         </div>
 
@@ -55,13 +56,12 @@
             <textarea name="description" class="form-control" rows="3">${product.description}</textarea>
         </div>
 
-      <div class="form-group" style="margin-bottom: 15px;">
-           <label>
-               <input type="hidden" name="availability" value="false">
-              <input type="checkbox" name="availability" value="true" <c:if test="${product.availability}">checked</c:if>>
-               Available in Store
-           </label>
-       </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label>
+                <input type="checkbox" name="availability" value="true" <c:if test="${product.availability}">checked</c:if>>
+                Available in Store
+            </label>
+        </div>
 
         <button type="submit" class="btn btn-primary">Update Product</button>
     </form>

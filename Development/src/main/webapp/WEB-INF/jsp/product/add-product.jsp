@@ -59,11 +59,10 @@
 
         <div class="form-group" style="margin-bottom: 15px;">
             <label>
-                <input type="hidden" name="availability" value="false">
                 <input type="checkbox" name="availability" value="true" checked>
                 Available in Store
-           </label>
-       </div>
+            </label>
+        </div>
 
         <button type="submit" class="btn btn-primary">Save Product</button>
     </form>
